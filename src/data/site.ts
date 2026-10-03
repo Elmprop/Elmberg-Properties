@@ -7,11 +7,7 @@ export const site = {
 	phoneHref: 'tel:+16129683842',
 	email: 'david@elmbergproperties.com',
 	location: 'United States',
-	/**
-	 * Optional form backend (e.g. a Formspree or Web3Forms endpoint) set via the
-	 * PUBLIC_FORM_ENDPOINT env var. Without it, the form opens a pre-filled email.
-	 */
-	formEndpoint: import.meta.env.PUBLIC_FORM_ENDPOINT as string | undefined,
+	formEndpoint: 'https://formspree.io/f/xqparjne',
 };
 
 export const nav = [
