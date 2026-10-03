@@ -1,0 +1,130 @@
+---
+import Icon from './Icon.astro';
+
+const reasons = [
+	{ icon: 'dollar', title: 'Fair Cash Offers', text: 'Get a competitive price with no hidden fees.' },
+	{ icon: 'clock', title: 'Fast & Simple Process', text: 'Sell your land quickly with minimal effort.' },
+	{ icon: 'tree', title: 'No Repairs or Listing Needed', text: 'We buy land in any condition, hassle-free.' },
+	{ icon: 'handshake', title: 'Quick Cash Offers', text: 'Receive a competitive cash offer within days, not weeks.' },
+	{ icon: 'shield', title: 'No Hidden Costs', text: 'No commissions, no fees — just a straightforward, transparent process.' },
+	{ icon: 'search', title: 'Expert Property Evaluation', text: 'We assess your land accurately and fairly, no matter the condition.' },
+] as const;
+---
+
+<section class="section why" aria-labelledby="why-title">
+	<div class="container">
+		<div class="section-head center">
+			<p class="eyebrow" data-reveal>Why Choose Us</p>
+			<h2 class="section-title" id="why-title" data-reveal>
+				Why landowners choose <em>Elmberg Properties</em>
+			</h2>
+		</div>
+		<ul class="why-grid">
+			{reasons.map((r, i) => (
+				<li class="why-card" data-reveal style={`--delay:${(i % 3) * 90}ms`}>
+					<span class="why-icon">
+						<Icon name={r.icon} size={24} />
+					</span>
+					<h3>{r.title}</h3>
+					<p>{r.text}</p>
+				</li>
+			))}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.why-grid {
+		display: grid;
+		gap: 1.25rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.why-card {
+		position: relative;
+		padding: 2rem 1.75rem;
+		border-radius: var(--radius-lg);
+		background: var(--white);
+		border: 1px solid var(--line);
+		box-shadow: var(--shadow-sm);
+		overflow: hidden;
+		transition:
+			transform 0.35s ease,
+			box-shadow 0.35s ease,
+			border-color 0.35s ease;
+	}
+	.why-card::before {
+		content: '';
+		position: absolute;
+		inset: 0 0 auto;
+		height: 4px;
+		background: linear-gradient(90deg, var(--navy-900), var(--bronze-700));
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform 0.45s ease;
+	}
+	.why-card:hover {
+		box-shadow: var(--shadow);
+		border-color: transparent;
+	}
+	.why-card:hover::before {
+		transform: scaleX(1);
+	}
+	.why-icon {
+		display: grid;
+		place-items: center;
+		width: 56px;
+		height: 56px;
+		margin-bottom: 1.25rem;
+		border-radius: 16px;
+		background: linear-gradient(135deg, var(--navy-800), var(--navy-900));
+		color: var(--gold-400);
+		box-shadow: 0 10px 20px -10px rgb(7 26 57 / 0.6);
+	}
+	.why-card h3 {
+		font-size: 1.3rem;
+		color: var(--navy-900);
+	}
+	.why-card p {
+		margin-top: 0.5rem;
+		color: var(--muted);
+		font-size: 0.97rem;
+		line-height: 1.6;
+	}
+	@media (max-width: 639px) {
+		.why-grid {
+			gap: 0.85rem;
+		}
+		.why-card {
+			display: grid;
+			grid-template-columns: auto 1fr;
+			column-gap: 1rem;
+			padding: 1.25rem;
+			border-radius: var(--radius);
+		}
+		.why-icon {
+			grid-row: span 2;
+			width: 48px;
+			height: 48px;
+			margin-bottom: 0;
+		}
+		.why-card h3 {
+			font-size: 1.15rem;
+		}
+		.why-card p {
+			margin-top: 0.25rem;
+			font-size: 0.92rem;
+		}
+	}
+	@media (min-width: 640px) {
+		.why-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+	@media (min-width: 1024px) {
+		.why-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+</style>

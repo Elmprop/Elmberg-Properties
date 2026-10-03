@@ -1,0 +1,275 @@
+---
+import Icon from './Icon.astro';
+import { processComparison, netComparison, netTotal } from '../data/site';
+---
+
+<section class="section compare" id="compare">
+	<div class="container">
+		<div class="section-head center">
+			<p class="eyebrow" data-reveal>Side-by-Side Comparison</p>
+			<h2 class="section-title" data-reveal>Listing with a realtor vs. <em>selling to us</em></h2>
+			<p class="lead" data-reveal>
+				A traditional listing can mean months of waiting and thousands in fees. Here’s how the two paths really stack up.
+			</p>
+		</div>
+
+		<div class="compare-grid">
+			<div class="table-card" data-reveal>
+				<h3 class="table-title">The Process</h3>
+				<table>
+					<thead>
+						<tr>
+							<td></td>
+							<th scope="col">Listing with a Realtor</th>
+							<th scope="col" class="us">Selling to Elmberg Properties</th>
+						</tr>
+					</thead>
+					<tbody>
+						{processComparison.map((row) => (
+							<tr>
+								<th scope="row">{row.label}</th>
+								<td class="them">
+									<Icon name="x" size={16} class="mark mark-x" />
+									<span>{row.realtor}</span>
+								</td>
+								<td class="us">
+									<Icon name="check" size={16} class="mark mark-check" />
+									<span>{row.us}</span>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+
+			<div class="table-card" data-reveal style="--delay:120ms">
+				<h3 class="table-title">The Numbers <span>Example sale</span></h3>
+				<table>
+					<thead>
+						<tr>
+							<td></td>
+							<th scope="col">Listing with a Realtor</th>
+							<th scope="col" class="us">Selling to Elmberg Properties</th>
+						</tr>
+					</thead>
+					<tbody>
+						{netComparison.map((row) => (
+							<tr>
+								<th scope="row">{row.label}</th>
+								<td class="them">
+									<span>{row.realtor}</span>
+								</td>
+								<td class="us">
+									<span>{row.us}</span>
+								</td>
+							</tr>
+						))}
+					</tbody>
+					<tfoot>
+						<tr>
+							<th scope="row">{netTotal.label}</th>
+							<td class="them">
+								<span>{netTotal.realtor}</span>
+							</td>
+							<td class="us">
+								<span>{netTotal.us}</span>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+
+		<p class="compare-note" data-reveal>
+			Even with a lower starting price, a direct cash sale can put <strong>more money in your pocket — months sooner</strong>.
+		</p>
+	</div>
+</section>
+
+<style>
+	.compare {
+		background:
+			linear-gradient(to bottom, var(--cream-50), var(--cream-100));
+	}
+	.compare-grid {
+		display: grid;
+		gap: 1.5rem;
+		align-items: start;
+	}
+	.table-card {
+		padding: clamp(1.1rem, 3vw, 2rem);
+		border-radius: var(--radius-lg);
+		background: var(--white);
+		border: 1px solid var(--line);
+		box-shadow: var(--shadow);
+	}
+	.table-title {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+		font-size: 1.45rem;
+		color: var(--navy-900);
+		margin-bottom: 1rem;
+	}
+	.table-title span {
+		font-family: var(--font-body-stack);
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--bronze-700);
+	}
+
+	table {
+		width: 100%;
+		border-collapse: separate;
+		border-spacing: 0;
+		font-size: 0.93rem;
+		line-height: 1.45;
+	}
+	thead th {
+		padding: 0.9rem 1rem;
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		text-align: left;
+		color: var(--muted);
+		vertical-align: bottom;
+	}
+	thead th.us {
+		color: var(--gold-400);
+		background: var(--navy-900);
+		border-radius: 14px 14px 0 0;
+	}
+	tbody th,
+	tfoot th {
+		padding: 0.95rem 1rem 0.95rem 0;
+		text-align: left;
+		font-weight: 600;
+		color: var(--navy-900);
+	}
+	tbody td,
+	tfoot td {
+		padding: 0.95rem 1rem;
+		vertical-align: top;
+	}
+	tbody tr:not(:last-child) > * {
+		border-bottom: 1px solid var(--line);
+	}
+	td.them {
+		color: var(--muted);
+	}
+	td.us {
+		background: var(--navy-900);
+		color: var(--white);
+		font-weight: 500;
+	}
+	tbody tr:not(:last-child) td.us {
+		border-bottom-color: rgb(201 151 63 / 0.7);
+	}
+	td {
+		position: relative;
+	}
+	td :global(.mark) {
+		float: left;
+		margin: 0.2rem 0.5rem 0 0;
+		stroke-width: 3;
+	}
+	td :global(.mark-x) {
+		color: #b4532a;
+	}
+	td :global(.mark-check) {
+		color: var(--gold-400);
+	}
+	tfoot > tr > * {
+		border-top: 2px solid var(--navy-900);
+		font-size: 1.05rem;
+	}
+	tfoot td {
+		font-family: var(--font-display-stack);
+		font-size: 1.35rem !important;
+		font-weight: 600;
+	}
+	tfoot td.them {
+		color: var(--navy-900);
+	}
+	tfoot td.us {
+		color: var(--gold-400);
+		border-top-color: var(--gold-500);
+		border-radius: 0 0 14px 14px;
+	}
+	/* table without a footer: round the bottom of the highlighted column */
+	table:not(:has(tfoot)) tbody tr:last-child td.us {
+		border-radius: 0 0 14px 14px;
+	}
+
+	.compare-note {
+		margin: 2.5rem auto 0;
+		max-width: 60ch;
+		text-align: center;
+		color: var(--muted);
+	}
+	.compare-note strong {
+		color: var(--bronze-700);
+	}
+
+	/* Phones: stack each row — label on top, the two values side by side */
+	@media (max-width: 599px) {
+		thead tr,
+		tbody tr,
+		tfoot tr {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+		}
+		thead td {
+			display: none;
+		}
+		thead th {
+			padding: 0.7rem 0.75rem;
+			font-size: 0.68rem;
+		}
+		thead th:not(.us) {
+			align-self: end;
+		}
+		tbody th,
+		tfoot th {
+			grid-column: 1 / -1;
+			padding: 0.9rem 0 0.35rem;
+			border-bottom: 0 !important;
+			font-size: 0.85rem;
+		}
+		tbody td,
+		tfoot td {
+			padding: 0.5rem 0.75rem 0.85rem;
+			font-size: 0.85rem;
+		}
+		tfoot > tr > th {
+			border-top: 2px solid var(--navy-900);
+		}
+		tfoot td {
+			border-top: 0 !important;
+		}
+		tfoot td.them {
+			padding-top: 0.6rem;
+		}
+		td :global(.mark) {
+			display: none;
+		}
+	}
+
+	.compare-grid {
+		max-width: 960px;
+		margin-inline: auto;
+	}
+	@media (min-width: 900px) {
+		tbody th,
+		tfoot th {
+			width: 28%;
+		}
+		.compare-grid {
+			gap: 2rem;
+		}
+	}
+</style>

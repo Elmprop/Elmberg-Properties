@@ -1,0 +1,205 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import fenceImg from '../assets/photos/about-fence.jpg';
+import handshakeImg from '../assets/photos/handshake.jpg';
+
+const highlights = [
+	{
+		icon: 'shield',
+		title: 'Hassle-free process',
+		text: 'No agents, no fees — just a fair cash offer and a smooth, stress-free closing. We handle everything for you.',
+	},
+	{
+		icon: 'tag',
+		title: 'Competitive pricing',
+		text: 'Fair, competitive cash offers that get you real value without the hassle of a traditional sale.',
+	},
+] as const;
+---
+
+<section class="section about" id="overview">
+	<div class="container about-grid">
+		<div class="about-media" data-reveal>
+			<div class="media-main">
+				<Image
+					src={fenceImg}
+					alt="Wooden fence line along a grassy property at golden hour"
+					widths={[480, 720, 960, 1200]}
+					sizes="(min-width: 1024px) 560px, 92vw"
+				/>
+			</div>
+			<div class="media-inset">
+				<Image
+					src={handshakeImg}
+					alt="Two people shaking hands outdoors to close a deal"
+					widths={[320, 480, 640]}
+					sizes="(min-width: 1024px) 280px, 45vw"
+				/>
+			</div>
+			<div class="media-badge">
+				<span class="badge-num">$0</span>
+				<span class="badge-text">fees &amp;<br />commissions</span>
+			</div>
+		</div>
+
+		<div class="about-copy">
+			<p class="eyebrow" data-reveal>About Elmberg Properties</p>
+			<h2 class="section-title" data-reveal>
+				Selling land should be <em>simple</em>, fair, and fast.
+			</h2>
+			<p class="lead about-lead" data-reveal>
+				At Elmberg Properties, we specialize in buying land quickly and hassle-free. Whether you own vacant lots,
+				rural acreage, or undeveloped land, we offer fair cash deals with no commissions, no hidden fees, and no long
+				waiting periods. Our goal is to make the selling process simple, transparent, and stress-free.
+			</p>
+
+			<div class="highlights">
+				{highlights.map((h, i) => (
+					<div class="highlight" data-reveal style={`--delay:${i * 100}ms`}>
+						<span class="hl-icon">
+							<Icon name={h.icon} size={22} />
+						</span>
+						<div>
+							<h3>{h.title}</h3>
+							<p>{h.text}</p>
+						</div>
+					</div>
+				))}
+			</div>
+
+			<a href="#contact" class="btn btn-primary" data-reveal>
+				Get Your Free Offer <Icon name="arrow" size={18} />
+			</a>
+		</div>
+	</div>
+</section>
+
+<style>
+	.about {
+		padding-top: clamp(5rem, 10vw, 8rem);
+	}
+	.about-grid {
+		display: grid;
+		gap: clamp(3rem, 6vw, 5rem);
+		align-items: center;
+	}
+
+	.about-media {
+		position: relative;
+		padding: 0 12% 14% 0;
+	}
+	.about-media::before {
+		/* bronze frame accent */
+		content: '';
+		position: absolute;
+		left: -14px;
+		top: -14px;
+		width: 45%;
+		height: 55%;
+		border-radius: var(--radius-lg);
+		background: repeating-linear-gradient(135deg, var(--bronze-700) 0 2px, transparent 2px 12px);
+		opacity: 0.35;
+	}
+	.media-main {
+		position: relative;
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		box-shadow: var(--shadow);
+		aspect-ratio: 4 / 4.4;
+	}
+	.media-main :global(img),
+	.media-inset :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.media-inset {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: 50%;
+		aspect-ratio: 1;
+		border-radius: var(--radius);
+		overflow: hidden;
+		border: 6px solid var(--cream-50);
+		box-shadow: var(--shadow-lg);
+	}
+	.media-badge {
+		position: absolute;
+		left: 6%;
+		bottom: 6%;
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		padding: 0.9rem 1.2rem;
+		border-radius: var(--radius);
+		background: var(--navy-900);
+		color: var(--white);
+		box-shadow: var(--shadow-lg);
+	}
+	.badge-num {
+		font-family: var(--font-display-stack);
+		font-size: 2.2rem;
+		font-weight: 600;
+		color: var(--gold-400);
+		line-height: 1;
+	}
+	.badge-text {
+		font-size: 0.78rem;
+		font-weight: 500;
+		line-height: 1.3;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: rgb(255 255 255 / 0.85);
+	}
+
+	.about-copy {
+		display: grid;
+		justify-items: start;
+	}
+	.about-lead {
+		margin-top: 1.25rem;
+	}
+	.highlights {
+		display: grid;
+		gap: 1rem;
+		margin: 2rem 0 2.25rem;
+		width: 100%;
+	}
+	.highlight {
+		display: flex;
+		gap: 1rem;
+		padding: 1.25rem;
+		border-radius: var(--radius);
+		background: var(--white);
+		border: 1px solid var(--line);
+		box-shadow: var(--shadow-sm);
+	}
+	.hl-icon {
+		display: grid;
+		place-items: center;
+		width: 48px;
+		height: 48px;
+		flex: none;
+		border-radius: 14px;
+		background: var(--navy-900);
+		color: var(--gold-400);
+	}
+	.highlight h3 {
+		font-size: 1.2rem;
+		color: var(--navy-900);
+		margin-bottom: 0.25rem;
+	}
+	.highlight p {
+		font-size: 0.95rem;
+		color: var(--muted);
+		line-height: 1.6;
+	}
+
+	@media (min-width: 1024px) {
+		.about-grid {
+			grid-template-columns: 1fr 1.05fr;
+		}
+	}
+</style>

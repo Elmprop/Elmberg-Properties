@@ -1,43 +1,41 @@
-# Astro Starter Kit: Minimal
+# Elmberg Properties
+
+Single-page marketing site for [elmbergproperties.com](https://elmbergproperties.com), built with Astro.
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # static output in ./dist
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Editing content
 
-## 🚀 Project Structure
+Phone, email, nav links, stats, testimonials, and the comparison tables live in `src/data/site.ts`.
+Each page section is a component in `src/components/`; brand colors and type are tokens at the top of `src/styles/global.css`.
 
-Inside of your Astro project, you'll see the following folders and files:
+## Contact form
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+By default the inquiry form opens the visitor's email app with a pre-filled message to `david@elmbergproperties.com`.
+To receive submissions directly instead, create a form endpoint (e.g. [Formspree](https://formspree.io) or [Web3Forms](https://web3forms.com)) and set it at build time:
+
+```sh
+PUBLIC_FORM_ENDPOINT=https://formspree.io/f/xxxxxxx npm run build
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Photo credits
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Stock photos are from [Unsplash](https://unsplash.com) under the free [Unsplash License](https://unsplash.com/license).
 
-Any static assets, like images, can be placed in the `public/` directory.
+| File | Photographer |
+| --- | --- |
+| `hero-field.jpg` | [Benjamin Davies](https://unsplash.com/photos/Zm2n2O7Fph4) |
+| `about-fence.jpg` | [Low Angle](https://unsplash.com/photos/QKSdzldhnoQ) |
+| `handshake.jpg` | [Erika Fletcher](https://unsplash.com/photos/GJwgw_XqooQ) |
+| `signing.jpg` | [Annika Wischnewsky](https://unsplash.com/photos/wNxbeoNUg_4) |
+| `land-residential.jpg` | [Paul Hanaoka](https://unsplash.com/photos/5Za2sS955yg) |
+| `land-acreage.jpg` | [Phil Hearing](https://unsplash.com/photos/rQwsx3S288U) |
+| `land-wooded.jpg` | [Declan Sun](https://unsplash.com/photos/UsSkZWuKc5k) |
+| `land-vacant.jpg` | [Qang Jaka](https://unsplash.com/photos/oqy-em7_ifM) |
+| `contact-development.jpg` | [Alex Reynolds](https://unsplash.com/photos/XWVofaQ50UY) |
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+`team-david.webp` is the client's own photo from the original site.

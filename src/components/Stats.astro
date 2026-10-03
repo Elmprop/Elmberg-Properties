@@ -1,0 +1,118 @@
+---
+import { stats } from '../data/site';
+---
+
+<section class="stats-wrap" aria-label="Elmberg Properties by the numbers">
+	<div class="container">
+		<dl class="stats" data-reveal>
+			{stats.map((s) => (
+				<div class="stat">
+					<dt>{s.label}</dt>
+					<dd>
+						{s.prefix}
+						<span data-count={s.value}>{s.value}</span>
+						{s.suffix}
+					</dd>
+				</div>
+			))}
+		</dl>
+	</div>
+</section>
+
+<style>
+	.stats-wrap {
+		position: relative;
+		z-index: 2;
+		margin-top: -5.5rem;
+	}
+	.stats {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		margin: 0;
+		border-radius: var(--radius-lg);
+		background: var(--white);
+		box-shadow: var(--shadow-lg);
+		overflow: hidden;
+		border-top: 4px solid var(--bronze-700);
+	}
+	.stat {
+		display: flex;
+		flex-direction: column-reverse;
+		justify-content: center;
+		gap: 0.35rem;
+		padding: clamp(1.25rem, 3.5vw, 2.25rem) clamp(1rem, 3vw, 2rem);
+		text-align: center;
+	}
+	.stat:nth-child(odd) {
+		border-right: 1px solid var(--line);
+	}
+	.stat:nth-child(-n + 2) {
+		border-bottom: 1px solid var(--line);
+	}
+	dd {
+		margin: 0;
+		font-family: var(--font-display-stack);
+		font-size: clamp(2rem, 5vw, 3.1rem);
+		font-weight: 600;
+		line-height: 1;
+		color: var(--navy-900);
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+	}
+	dt {
+		font-size: clamp(0.78rem, 1.6vw, 0.9rem);
+		font-weight: 500;
+		color: var(--muted);
+		line-height: 1.35;
+	}
+	@media (max-width: 639px) {
+		.stat {
+			padding: 0.9rem 0.75rem;
+		}
+		dd {
+			font-size: 1.75rem;
+		}
+	}
+	@media (min-width: 860px) {
+		.stats {
+			grid-template-columns: repeat(4, 1fr);
+		}
+		.stat:nth-child(-n + 2) {
+			border-bottom: 0;
+		}
+		.stat:not(:last-child) {
+			border-right: 1px solid var(--line);
+		}
+	}
+</style>
+
+<script>
+	const counters = document.querySelectorAll<HTMLElement>('[data-count]');
+	const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	if (!reduce) {
+		const io = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+					const el = entry.target as HTMLElement;
+					const target = Number(el.dataset.count);
+					const start = performance.now();
+					const duration = 1800;
+					const tick = (now: number) => {
+						const t = Math.min((now - start) / duration, 1);
+						const eased = 1 - Math.pow(1 - t, 4);
+						el.textContent = String(Math.round(target * eased));
+						if (t < 1) requestAnimationFrame(tick);
+					};
+					requestAnimationFrame(tick);
+					io.unobserve(el);
+				}
+			},
+			{ threshold: 0.6 },
+		);
+		counters.forEach((el) => {
+			el.textContent = '0';
+			io.observe(el);
+		});
+	}
+</script>

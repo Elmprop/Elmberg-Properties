@@ -1,0 +1,399 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import developmentImg from '../assets/photos/contact-development.jpg';
+import { site } from '../data/site';
+---
+
+<section class="section contact on-dark" id="contact">
+	<Picture
+		src={developmentImg}
+		alt="Aerial view of newly graded lots and a new road beside an established neighborhood"
+		class="contact-bg"
+		formats={['avif', 'webp']}
+		widths={[640, 1024, 1600, 2000]}
+		sizes="100vw"
+	/>
+	<div class="contact-overlay" aria-hidden="true"></div>
+
+	<div class="container contact-grid">
+		<div class="contact-copy">
+			<p class="eyebrow" data-reveal>Get Your Offer</p>
+			<h2 class="section-title" data-reveal>Ready to sell your land? Get a <em>fair cash offer</em> today.</h2>
+			<p class="lead" data-reveal>
+				Tell us a little about your property and we’ll get back to you with a no-obligation cash offer. Prefer to talk?
+				Give us a call.
+			</p>
+
+			<ul class="contact-list" data-reveal>
+				<li>
+					<span class="c-icon"><Icon name="phone" size={20} /></span>
+					<span>
+						<small>Call us</small>
+						<a href={site.phoneHref}>{site.phone}</a>
+					</span>
+				</li>
+				<li>
+					<span class="c-icon"><Icon name="mail" size={20} /></span>
+					<span>
+						<small>Email</small>
+						<a href={`mailto:${site.email}`}>{site.email}</a>
+					</span>
+				</li>
+				<li>
+					<span class="c-icon"><Icon name="pin" size={20} /></span>
+					<span>
+						<small>Buying land across the</small>
+						<span class="c-value">{site.location}</span>
+					</span>
+				</li>
+			</ul>
+		</div>
+
+		<div class="form-card" data-reveal style="--delay:120ms">
+			<div class="form-head">
+				<h3>Real Estate Inquiry Form</h3>
+				<p>Please provide the following information to help us better understand your real estate needs.</p>
+			</div>
+
+			<form
+				class="offer-form"
+				data-offer-form
+				data-endpoint={site.formEndpoint ?? ''}
+				data-email={site.email}
+				method="post"
+				action={site.formEndpoint || `mailto:${site.email}`}
+				novalidate
+			>
+				<div class="field-row">
+					<div class="field">
+						<label for="f-name">Name</label>
+						<input id="f-name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" />
+					</div>
+					<div class="field">
+						<label for="f-phone">Phone <span aria-hidden="true">*</span></label>
+						<input
+							id="f-phone"
+							name="phone"
+							type="tel"
+							autocomplete="tel"
+							inputmode="tel"
+							placeholder="(555) 123-4567"
+							required
+							pattern="[0-9()#&+*\-=. ]+"
+						/>
+						<p class="field-error" data-error-for="phone">Please enter a valid phone number.</p>
+					</div>
+				</div>
+				<div class="field">
+					<label for="f-email">Email</label>
+					<input id="f-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
+					<p class="field-error" data-error-for="email">Please enter a valid email address.</p>
+				</div>
+				<div class="field">
+					<label for="f-address">Address of Land</label>
+					<input id="f-address" name="address" type="text" autocomplete="street-address" placeholder="Street, county, or parcel #" />
+				</div>
+				<div class="field">
+					<label for="f-message">Message</label>
+					<textarea id="f-message" name="message" rows="4" placeholder="Why do you want to sell your land? Is there anything else you want us to know?"></textarea>
+				</div>
+				<input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+				<button type="submit" class="btn btn-primary submit">
+					<span class="submit-label">Send — Get My Offer</span>
+					<Icon name="arrow" size={18} />
+				</button>
+				<p class="form-fine">
+					<Icon name="shield" size={14} /> No obligation, no pressure — just a fair cash offer.
+				</p>
+				<p class="form-status" data-form-status role="status" aria-live="polite"></p>
+			</form>
+		</div>
+	</div>
+</section>
+
+<style>
+	.contact {
+		position: relative;
+		isolation: isolate;
+		overflow: hidden;
+		color: var(--white);
+		background: var(--navy-900);
+	}
+	.contact :global(.contact-bg),
+	.contact :global(.contact-bg img) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: -2;
+	}
+	.contact-overlay {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background:
+			linear-gradient(110deg, rgb(4 15 36 / 0.94) 0%, rgb(7 26 57 / 0.8) 40%, rgb(7 26 57 / 0.4) 100%);
+	}
+	.contact-grid {
+		display: grid;
+		gap: 3rem;
+		align-items: center;
+	}
+	.contact-copy .lead {
+		margin-top: 1.25rem;
+	}
+	.contact-list {
+		display: grid;
+		gap: 1rem;
+		list-style: none;
+		margin: 2.25rem 0 0;
+		padding: 0;
+	}
+	.contact-list li {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		line-height: 1.35;
+	}
+	.contact-list small {
+		display: block;
+		font-size: 0.75rem;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: rgb(255 255 255 / 0.6);
+	}
+	.contact-list a,
+	.c-value {
+		font-size: 1.1rem;
+		font-weight: 500;
+		text-decoration: none;
+		word-break: break-word;
+	}
+	.contact-list a:hover {
+		color: var(--gold-400);
+	}
+	.c-icon {
+		display: grid;
+		place-items: center;
+		width: 50px;
+		height: 50px;
+		flex: none;
+		border-radius: 50%;
+		background: rgb(201 151 63 / 0.15);
+		border: 1px solid rgb(201 151 63 / 0.4);
+		color: var(--gold-400);
+	}
+
+	.form-card {
+		padding: clamp(1.4rem, 4vw, 2.5rem);
+		border-radius: var(--radius-lg);
+		background: var(--white);
+		color: var(--ink);
+		box-shadow: var(--shadow-lg);
+		border-top: 5px solid var(--bronze-700);
+	}
+	.form-head h3 {
+		font-size: clamp(1.45rem, 2.4vw, 1.8rem);
+		color: var(--navy-900);
+	}
+	.form-head p {
+		margin-top: 0.4rem;
+		font-size: 0.92rem;
+		color: var(--muted);
+	}
+	.offer-form {
+		display: grid;
+		gap: 1rem;
+		margin-top: 1.5rem;
+	}
+	.field-row {
+		display: grid;
+		gap: 1rem;
+	}
+	.field {
+		display: grid;
+		gap: 0.35rem;
+	}
+	label {
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--navy-900);
+	}
+	label span {
+		color: var(--bronze-700);
+	}
+	input,
+	textarea {
+		width: 100%;
+		min-height: 50px;
+		padding: 0.8rem 1rem;
+		border-radius: 12px;
+		border: 1.5px solid var(--line);
+		background: var(--cream-50);
+		color: var(--ink);
+		font: inherit;
+		font-size: 1rem; /* 16px prevents iOS zoom on focus */
+		transition:
+			border-color 0.2s ease,
+			box-shadow 0.2s ease,
+			background-color 0.2s ease;
+	}
+	textarea {
+		resize: vertical;
+		min-height: 110px;
+	}
+	input::placeholder,
+	textarea::placeholder {
+		color: #8a93a6;
+	}
+	input:focus,
+	textarea:focus {
+		outline: none;
+		border-color: var(--bronze-700);
+		background: var(--white);
+		box-shadow: 0 0 0 4px rgb(121 82 23 / 0.15);
+	}
+	.field.invalid input {
+		border-color: #b4352a;
+	}
+	.field-error {
+		display: none;
+		font-size: 0.8rem;
+		color: #b4352a;
+	}
+	.field.invalid .field-error {
+		display: block;
+	}
+	.hp {
+		position: absolute;
+		left: -9999px;
+		width: 1px;
+		height: 1px;
+		opacity: 0;
+	}
+	.submit {
+		width: 100%;
+		margin-top: 0.5rem;
+		min-height: 56px;
+		font-size: 1.02rem;
+	}
+	.submit[disabled] {
+		opacity: 0.7;
+		cursor: progress;
+	}
+	.form-fine {
+		font-size: 0.8rem;
+		color: var(--muted);
+		text-align: center;
+	}
+	.form-fine :global(svg) {
+		display: inline-block;
+		vertical-align: -2px;
+		margin-right: 0.3rem;
+		color: var(--bronze-700);
+	}
+	.form-status:empty {
+		display: none;
+	}
+	.form-status {
+		padding: 0.85rem 1rem;
+		border-radius: 12px;
+		font-size: 0.92rem;
+		font-weight: 500;
+		background: #eef6ee;
+		color: #22562c;
+	}
+	.form-status.is-error {
+		background: #fbeeec;
+		color: #8a2a20;
+	}
+
+	@media (min-width: 560px) {
+		.field-row {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+	@media (min-width: 1024px) {
+		.contact-grid {
+			grid-template-columns: 1fr 1fr;
+			gap: 4rem;
+		}
+	}
+</style>
+
+<script>
+	const form = document.querySelector<HTMLFormElement>('[data-offer-form]');
+	if (form) {
+		const status = form.querySelector<HTMLElement>('[data-form-status]')!;
+		const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+		const label = submit.querySelector<HTMLElement>('.submit-label')!;
+		const endpoint = form.dataset.endpoint;
+		const email = form.dataset.email!;
+
+		const validate = () => {
+			let firstInvalid: HTMLInputElement | null = null;
+			form.querySelectorAll<HTMLInputElement>('input[name="phone"], input[name="email"]').forEach((input) => {
+				const field = input.closest('.field')!;
+				const ok = input.checkValidity();
+				field.classList.toggle('invalid', !ok);
+				input.setAttribute('aria-invalid', String(!ok));
+				if (!ok && !firstInvalid) firstInvalid = input;
+			});
+			(firstInvalid as HTMLInputElement | null)?.focus();
+			return !firstInvalid;
+		};
+		form.addEventListener('input', (e) => {
+			const field = (e.target as HTMLElement).closest('.field');
+			if (field?.classList.contains('invalid')) {
+				const input = field.querySelector('input')!;
+				field.classList.toggle('invalid', !input.checkValidity());
+			}
+		});
+
+		const setStatus = (msg: string, error = false) => {
+			status.textContent = msg;
+			status.classList.toggle('is-error', error);
+		};
+
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			if (!validate()) return;
+			const data = new FormData(form);
+			if (data.get('_gotcha')) return; // bot
+
+			if (!endpoint) {
+				// No form backend configured: hand off to the visitor's email app, pre-filled.
+				const body = [
+					`Name: ${data.get('name') || ''}`,
+					`Phone: ${data.get('phone') || ''}`,
+					`Email: ${data.get('email') || ''}`,
+					`Address of Land: ${data.get('address') || ''}`,
+					'',
+					`${data.get('message') || ''}`,
+				].join('\n');
+				const subject = `Land inquiry${data.get('address') ? ` — ${data.get('address')}` : ''}`;
+				window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+				setStatus('Opening your email app… If nothing happens, call or email us directly using the details on this page.');
+				return;
+			}
+
+			submit.disabled = true;
+			const original = label.textContent;
+			label.textContent = 'Sending…';
+			try {
+				const res = await fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+				if (!res.ok) throw new Error(String(res.status));
+				form.reset();
+				setStatus('Thank you! We received your details and will be in touch shortly with your cash offer.');
+			} catch {
+				setStatus('Sorry — something went wrong sending your message. Please call or email us directly.', true);
+			} finally {
+				submit.disabled = false;
+				label.textContent = original;
+			}
+		});
+	}
+</script>

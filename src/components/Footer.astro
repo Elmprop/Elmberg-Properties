@@ -1,0 +1,191 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { nav, site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+	<div class="container">
+		<div class="footer-grid">
+			<div class="footer-brand">
+				<Logo tone="light" />
+				<p>
+					Elmberg Properties offers fast, fair, cash offers for your land — no fees, no commissions, just a simple,
+					hassle-free process.
+				</p>
+				<a href="#contact" class="btn btn-gold">Get Your Offer Today <Icon name="arrow" size={18} /></a>
+			</div>
+
+			<nav class="footer-col" aria-label="Footer">
+				<h2>Explore</h2>
+				<ul>
+					{nav.map((item) => (
+						<li><a href={item.href}>{item.label}</a></li>
+					))}
+				</ul>
+			</nav>
+
+			<div class="footer-col">
+				<h2>Contact Info</h2>
+				<ul class="footer-contact">
+					<li><Icon name="phone" size={16} /><a href={site.phoneHref}>{site.phone}</a></li>
+					<li><Icon name="mail" size={16} /><a href={`mailto:${site.email}`}>{site.email}</a></li>
+					<li><Icon name="pin" size={16} /><span>{site.location}</span></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="footer-bottom">
+			<p>© {year} Elmberg Properties. All rights reserved.</p>
+			<a href="#top" class="to-top">Back to top ↑</a>
+		</div>
+	</div>
+</footer>
+
+<!-- Mobile quick-action bar -->
+<div class="mobile-cta" data-mobile-cta>
+	<a href={site.phoneHref} class="btn btn-ghost"><Icon name="phone" size={18} /> Call</a>
+	<a href="#contact" class="btn btn-gold">Get Cash Offer</a>
+</div>
+
+<style>
+	.footer {
+		position: relative;
+		background: var(--navy-950);
+		color: rgb(255 255 255 / 0.72);
+		padding: clamp(3.5rem, 8vw, 5.5rem) 0 calc(2rem + 76px + env(safe-area-inset-bottom));
+		border-top: 4px solid var(--bronze-700);
+	}
+	.footer-grid {
+		display: grid;
+		gap: 2.5rem;
+	}
+	.footer-brand {
+		display: grid;
+		justify-items: start;
+		gap: 1.5rem;
+		max-width: 420px;
+	}
+	.footer-brand :global(.logo) {
+		font-size: clamp(1.5rem, 4vw, 1.9rem);
+	}
+	.footer-brand p {
+		font-size: 0.95rem;
+	}
+	.footer-col h2 {
+		font-family: var(--font-body-stack);
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--gold-400);
+		margin-bottom: 1rem;
+	}
+	.footer-col ul {
+		display: grid;
+		gap: 0.6rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.footer-col a {
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+	.footer-col a:hover {
+		color: var(--white);
+	}
+	.footer-contact li {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		word-break: break-word;
+	}
+	.footer-contact :global(svg) {
+		color: var(--gold-500);
+		flex: none;
+	}
+	.footer-bottom {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-top: 3rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid rgb(255 255 255 / 0.1);
+		font-size: 0.85rem;
+		color: rgb(255 255 255 / 0.55);
+	}
+	.to-top {
+		text-decoration: none;
+	}
+	.to-top:hover {
+		color: var(--gold-400);
+	}
+
+	.mobile-cta {
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 40;
+		display: grid;
+		grid-template-columns: 1fr 1.6fr;
+		gap: 0.6rem;
+		padding: 0.7rem var(--gutter) calc(0.7rem + env(safe-area-inset-bottom));
+		background: rgb(7 26 57 / 0.94);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		border-top: 1px solid rgb(255 255 255 / 0.08);
+		transform: translateY(110%);
+		transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+	.mobile-cta.is-shown {
+		transform: none;
+	}
+	.mobile-cta .btn {
+		min-height: 48px;
+		padding: 0.6rem 1rem;
+		color: var(--white);
+	}
+	.mobile-cta .btn-gold {
+		color: var(--navy-900);
+	}
+
+	@media (min-width: 768px) {
+		.footer-grid {
+			grid-template-columns: 1.6fr 1fr 1.2fr;
+		}
+	}
+	@media (min-width: 1080px) {
+		.mobile-cta {
+			display: none;
+		}
+		.footer {
+			padding-bottom: 2rem;
+		}
+	}
+</style>
+
+<script>
+	// Show the quick-action bar on small screens once the hero is scrolled past,
+	// and hide it while the contact form is on screen.
+	const bar = document.querySelector<HTMLElement>('[data-mobile-cta]');
+	const hero = document.getElementById('top');
+	const contact = document.getElementById('contact');
+	if (bar && hero && contact) {
+		let pastHero = false;
+		let atContact = false;
+		const update = () => bar.classList.toggle('is-shown', pastHero && !atContact);
+		new IntersectionObserver(([e]) => {
+			pastHero = !e.isIntersecting;
+			update();
+		}, { rootMargin: '-40% 0px 0px 0px' }).observe(hero);
+		new IntersectionObserver(([e]) => {
+			atContact = e.isIntersecting;
+			update();
+		}, { threshold: 0.15 }).observe(contact);
+	}
+</script>

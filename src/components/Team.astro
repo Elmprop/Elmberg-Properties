@@ -1,0 +1,152 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import davidImg from '../assets/team-david.webp';
+import { site } from '../data/site';
+---
+
+<section class="section team" id="about">
+	<div class="container team-grid">
+		<div class="team-photo" data-reveal>
+			<Image
+				src={davidImg}
+				alt="David Elmberg, CEO of Elmberg Properties"
+				widths={[400, 640, 900]}
+				sizes="(min-width: 1024px) 480px, 92vw"
+			/>
+			<div class="team-tag">
+				<strong>David Elmberg</strong>
+				<span>CEO</span>
+			</div>
+		</div>
+
+		<div class="team-copy">
+			<p class="eyebrow" data-reveal>Meet The Team</p>
+			<h2 class="section-title" data-reveal>A real person, <em>not a call center</em></h2>
+			<blockquote class="team-quote" data-reveal>
+				<Icon name="quote" size={34} filled class="q-mark" />
+				<p>
+					At Elmberg Properties, we offer a range of services designed to make selling your land as easy and profitable
+					as possible. From fair cash offers to quick closings, we’re here to help you every step of the way.
+				</p>
+			</blockquote>
+			<p class="lead" data-reveal>
+				Have a question before you request an offer? Reach out directly — you’ll get a straight answer and zero pressure.
+			</p>
+			<div class="team-contact" data-reveal>
+				<a href={site.phoneHref} class="btn btn-navy"><Icon name="phone" size={18} /> {site.phone}</a>
+				<a href={`mailto:${site.email}`} class="contact-link">
+					<Icon name="mail" size={18} />
+					{site.email}
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.team-grid {
+		display: grid;
+		gap: clamp(3rem, 6vw, 5rem);
+		align-items: center;
+	}
+	.team-photo {
+		position: relative;
+		max-width: 520px;
+		width: 100%;
+		margin-inline: auto;
+	}
+	.team-photo::before {
+		content: '';
+		position: absolute;
+		inset: 0.85rem -0.6rem -0.85rem 0.6rem;
+		border-radius: var(--radius-lg);
+		border: 2px solid var(--bronze-700);
+		opacity: 0.5;
+	}
+	.team-photo :global(img) {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 1;
+		object-fit: cover;
+		border-radius: var(--radius-lg);
+		box-shadow: var(--shadow-lg);
+	}
+	.team-tag {
+		position: absolute;
+		left: 1.25rem;
+		bottom: 1.25rem;
+		display: grid;
+		padding: 0.85rem 1.25rem;
+		border-radius: var(--radius);
+		background: var(--white);
+		box-shadow: var(--shadow);
+		border-left: 4px solid var(--bronze-700);
+		line-height: 1.3;
+	}
+	.team-tag strong {
+		font-family: var(--font-display-stack);
+		font-size: 1.2rem;
+		font-weight: 600;
+		color: var(--navy-900);
+	}
+	.team-tag span {
+		font-size: 0.82rem;
+		color: var(--bronze-700);
+		font-weight: 600;
+		letter-spacing: 0.04em;
+	}
+
+	.team-quote {
+		position: relative;
+		margin: 1.75rem 0;
+		padding: 1.5rem 1.5rem 1.5rem 1.75rem;
+		border-radius: var(--radius);
+		background: var(--cream-100);
+		border-left: 4px solid var(--bronze-700);
+	}
+	.team-quote :global(.q-mark) {
+		position: absolute;
+		top: -14px;
+		right: 18px;
+		color: var(--bronze-700);
+		opacity: 0.25;
+	}
+	.team-quote p {
+		font-family: var(--font-display-stack);
+		font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+		font-style: italic;
+		line-height: 1.5;
+		color: var(--navy-900);
+	}
+	.team-contact {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 1rem 1.5rem;
+		margin-top: 2rem;
+	}
+	.contact-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-weight: 500;
+		color: var(--navy-900);
+		text-decoration: none;
+		border-bottom: 2px solid var(--gold-500);
+		padding-bottom: 2px;
+		word-break: break-all;
+	}
+	.contact-link:hover {
+		color: var(--bronze-700);
+	}
+
+	@media (min-width: 1024px) {
+		.team-grid {
+			grid-template-columns: 0.9fr 1.1fr;
+		}
+		.team-photo::before {
+			inset: 1.25rem -1.25rem -1.25rem 1.25rem;
+		}
+	}
+</style>

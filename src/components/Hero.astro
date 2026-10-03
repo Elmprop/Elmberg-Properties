@@ -1,0 +1,423 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import heroImg from '../assets/photos/hero-field.jpg';
+import { site, testimonials } from '../data/site';
+
+const points = ['No fees or commissions', 'We cover closing costs', 'Any condition, any size'];
+---
+
+<section class="hero on-dark" id="top">
+	<Picture
+		src={heroImg}
+		alt="Sun setting over an open green field framed by tree branches"
+		class="hero-bg"
+		formats={['avif', 'webp']}
+		widths={[640, 960, 1280, 1600, 2000, 2400]}
+		sizes="100vw"
+		loading="eager"
+		fetchpriority="high"
+	/>
+	<div class="hero-overlay" aria-hidden="true"></div>
+
+	<div class="container hero-inner">
+		<div class="hero-copy">
+			<p class="eyebrow hero-eyebrow">Get a Fast, Fair Cash Offer</p>
+			<h1>We Want to Buy <em>Your Land</em></h1>
+			<p class="hero-lead">
+				Sell your land quickly and hassle-free. We make cash offers for all types of land — no fees, no
+				commissions, and no waiting. Submit your property details today and get a no-obligation offer.
+			</p>
+			<div class="hero-ctas">
+				<a href="#contact" class="btn btn-gold">
+					Get My Cash Offer <Icon name="arrow" size={18} />
+				</a>
+				<a href={site.phoneHref} class="btn btn-ghost">
+					<Icon name="phone" size={18} /> Call<span class="call-num">&nbsp;{site.phone}</span>
+				</a>
+			</div>
+			<ul class="hero-points">
+				{points.map((p) => (
+					<li>
+						<span class="tick"><Icon name="check" size={14} /></span>
+						{p}
+					</li>
+				))}
+			</ul>
+		</div>
+
+		<aside class="hero-card" aria-label="Landowner reviews" data-hero-reviews>
+			<div class="hero-card-top">
+				<div class="stars" role="img" aria-label="5 out of 5 stars">
+					{Array.from({ length: 5 }).map(() => <Icon name="star" size={18} filled />)}
+				</div>
+				<div class="dots" role="group" aria-label="Choose a review">
+					{testimonials.map((t, i) => (
+						<button
+							type="button"
+							class:list={['dot', { 'is-active': i === 0 }]}
+							aria-label={`Show review ${i + 1} of ${testimonials.length}: ${t.name}`}
+							aria-current={i === 0 ? 'true' : undefined}
+							data-dot={i}
+						></button>
+					))}
+				</div>
+			</div>
+			<div class="slides" aria-live="off" data-slides>
+				{testimonials.map((t, i) => (
+					<figure class:list={['slide', { 'is-active': i === 0 }]} aria-hidden={i === 0 ? undefined : 'true'} data-slide>
+						<blockquote>
+							<p class="hero-card-quote">“{t.quote}”</p>
+						</blockquote>
+						<figcaption class="hero-card-meta">
+							<strong>{t.name}</strong> · Landowner
+						</figcaption>
+					</figure>
+				))}
+			</div>
+			<div class="hero-card-divider"></div>
+			<div class="hero-card-stat">
+				<span class="num">99%</span>
+				<span>customer satisfaction across 100+ landowners served</span>
+			</div>
+		</aside>
+	</div>
+</section>
+
+<style>
+	.hero {
+		position: relative;
+		isolation: isolate;
+		display: flex;
+		align-items: center;
+		/* fills the space .intro leaves after the stats card (see index.astro) */
+		flex: 1;
+		padding-block: calc(var(--header-h) + clamp(1rem, 4vh, 3rem)) calc(5.5rem + clamp(1.25rem, 4vh, 3rem));
+		color: var(--white);
+		overflow: hidden;
+		background: var(--navy-900);
+	}
+	.hero :global(.hero-bg),
+	.hero :global(.hero-bg img) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 60% 60%;
+		z-index: -2;
+	}
+	.hero :global(.hero-bg img) {
+		animation: hero-zoom 18s ease-out both;
+	}
+	@keyframes hero-zoom {
+		from {
+			transform: scale(1.08);
+		}
+	}
+	.hero-overlay {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background:
+			linear-gradient(100deg, rgb(4 15 36 / 0.94) 0%, rgb(7 26 57 / 0.82) 38%, rgb(7 26 57 / 0.35) 70%, rgb(7 26 57 / 0.2) 100%),
+			linear-gradient(to top, rgb(4 15 36 / 0.85), transparent 45%);
+	}
+
+	.hero-inner {
+		display: grid;
+		gap: 3rem;
+		align-items: end;
+	}
+	.hero-copy {
+		max-width: 680px;
+	}
+	.hero-eyebrow {
+		animation: rise 0.9s 0.1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+	}
+	h1 {
+		font-size: clamp(2.4rem, min(7.2vw, 8.5vh), 5.4rem);
+		font-weight: 600;
+		line-height: 1.02;
+		letter-spacing: -0.025em;
+		animation: rise 0.9s 0.2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+	}
+	h1 em {
+		display: inline-block;
+		font-style: italic;
+		font-weight: 500;
+		background: linear-gradient(100deg, var(--gold-200), var(--gold-400) 45%, var(--gold-500));
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+		padding-right: 0.08em;
+	}
+	.hero-lead {
+		margin-top: clamp(0.9rem, 2.5vh, 1.5rem);
+		font-size: clamp(1rem, min(1.6vw, 2.2vh), 1.2rem);
+		color: rgb(255 255 255 / 0.82);
+		max-width: 56ch;
+		animation: rise 0.9s 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+	}
+	.hero-ctas {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: clamp(1.25rem, 3.5vh, 2.25rem);
+		animation: rise 0.9s 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+	}
+	.hero-points {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.65rem 1.5rem;
+		list-style: none;
+		margin: clamp(1rem, 3vh, 2rem) 0 0;
+		padding: 0;
+		font-size: 0.92rem;
+		color: rgb(255 255 255 / 0.85);
+		animation: rise 0.9s 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+	}
+	.hero-points li {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+	.tick {
+		display: grid;
+		place-items: center;
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		background: var(--gold-500);
+		color: var(--navy-900);
+		flex: none;
+	}
+	.tick :global(svg) {
+		stroke-width: 3;
+	}
+
+	.hero-card {
+		display: none;
+		width: 320px;
+		justify-self: end;
+		padding: 1.6rem;
+		border-radius: var(--radius);
+		background: rgb(255 255 255 / 0.1);
+		border: 1px solid rgb(255 255 255 / 0.2);
+		backdrop-filter: blur(16px) saturate(140%);
+		-webkit-backdrop-filter: blur(16px) saturate(140%);
+		box-shadow: var(--shadow-lg);
+		animation: rise 1s 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+	}
+	.hero-card-top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+	.stars {
+		display: flex;
+		gap: 2px;
+		color: var(--gold-400);
+	}
+	.dots {
+		display: flex;
+		gap: 2px;
+	}
+	.dot {
+		/* 24px hit area around a small visible pill */
+		position: relative;
+		width: 24px;
+		height: 24px;
+		padding: 0;
+		border: 0;
+		background: none;
+		cursor: pointer;
+	}
+	.dot::before {
+		content: '';
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		width: 7px;
+		height: 7px;
+		border-radius: 999px;
+		background: rgb(255 255 255 / 0.35);
+		transform: translate(-50%, -50%);
+		transition:
+			width 0.35s ease,
+			background-color 0.35s ease;
+	}
+	.dot:hover::before {
+		background: rgb(255 255 255 / 0.65);
+	}
+	.dot.is-active::before {
+		width: 18px;
+		background: var(--gold-400);
+	}
+
+	/* All slides share one grid cell, so the card is always as tall as the longest review */
+	.slides {
+		display: grid;
+	}
+	.slide {
+		grid-area: 1 / 1;
+		margin: 0;
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(8px);
+		transition:
+			opacity 0.6s ease,
+			transform 0.6s ease,
+			visibility 0s linear 0.6s;
+	}
+	.slide.is-active {
+		opacity: 1;
+		visibility: visible;
+		transform: none;
+		transition-delay: 0s;
+	}
+	.slide blockquote {
+		margin: 0;
+	}
+	.hero-card-quote {
+		margin-top: 0.85rem;
+		font-family: var(--font-display-stack);
+		font-size: 1.25rem;
+		line-height: 1.35;
+	}
+	.hero-card-meta {
+		margin-top: 0.6rem;
+		font-size: 0.85rem;
+		color: rgb(255 255 255 / 0.7);
+	}
+	.hero-card-meta strong {
+		color: var(--white);
+		font-weight: 600;
+	}
+	.hero-card-divider {
+		height: 1px;
+		margin: 1.25rem 0;
+		background: rgb(255 255 255 / 0.18);
+	}
+	.hero-card-stat {
+		display: flex;
+		align-items: center;
+		gap: 0.9rem;
+		font-size: 0.85rem;
+		line-height: 1.45;
+		color: rgb(255 255 255 / 0.8);
+	}
+	.hero-card-stat .num {
+		font-family: var(--font-display-stack);
+		font-size: 2.2rem;
+		font-weight: 600;
+		color: var(--gold-400);
+		line-height: 1;
+	}
+
+	@keyframes rise {
+		from {
+			opacity: 0;
+			transform: translateY(28px);
+		}
+	}
+
+	@media (max-width: 639px) {
+		.hero-points {
+			display: none;
+		}
+	}
+	@media (max-width: 479px) {
+		.hero-ctas {
+			flex-wrap: nowrap;
+		}
+		.hero-ctas .btn {
+			padding-inline: 1.1rem;
+		}
+		.hero-ctas .btn:first-child {
+			flex: 1;
+		}
+		.call-num {
+			display: none;
+		}
+	}
+	@media (min-width: 1200px) {
+		.hero-inner {
+			grid-template-columns: 1fr auto;
+		}
+		.hero-card {
+			display: block;
+		}
+	}
+</style>
+
+<script>
+	const card = document.querySelector<HTMLElement>('[data-hero-reviews]');
+	if (card) {
+		const slides = [...card.querySelectorAll<HTMLElement>('[data-slide]')];
+		const dots = [...card.querySelectorAll<HTMLButtonElement>('[data-dot]')];
+		const region = card.querySelector<HTMLElement>('[data-slides]')!;
+		const INTERVAL = 6000;
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		let current = 0;
+		let timer: number | undefined;
+		let hovered = false;
+		let focused = false;
+
+		const show = (i: number) => {
+			current = (i + slides.length) % slides.length;
+			slides.forEach((s, n) => {
+				s.classList.toggle('is-active', n === current);
+				if (n === current) s.removeAttribute('aria-hidden');
+				else s.setAttribute('aria-hidden', 'true');
+			});
+			dots.forEach((d, n) => {
+				d.classList.toggle('is-active', n === current);
+				if (n === current) d.setAttribute('aria-current', 'true');
+				else d.removeAttribute('aria-current');
+			});
+		};
+
+		const stop = () => {
+			window.clearInterval(timer);
+			timer = undefined;
+		};
+		const start = () => {
+			stop();
+			// Auto-rotate only while the card is visible and nobody is interacting with it
+			if (reduceMotion || hovered || focused || document.hidden || card.offsetParent === null) return;
+			timer = window.setInterval(() => show(current + 1), INTERVAL);
+		};
+
+		dots.forEach((dot) =>
+			dot.addEventListener('click', () => {
+				region.setAttribute('aria-live', 'polite');
+				show(Number(dot.dataset.dot));
+				start();
+			}),
+		);
+		card.addEventListener('mouseenter', () => {
+			hovered = true;
+			stop();
+		});
+		card.addEventListener('mouseleave', () => {
+			hovered = false;
+			start();
+		});
+		card.addEventListener('focusin', (e) => {
+			// Pause for keyboard focus only; a mouse click leaves focus on the dot, which shouldn't freeze rotation
+			if (!(e.target as HTMLElement).matches(':focus-visible')) return;
+			focused = true;
+			stop();
+		});
+		card.addEventListener('focusout', (e) => {
+			if (card.contains(e.relatedTarget as Node)) return;
+			focused = false;
+			start();
+		});
+		document.addEventListener('visibilitychange', start);
+		window.matchMedia('(min-width: 1200px)').addEventListener('change', start);
+		start();
+	}
+</script>

@@ -1,0 +1,61 @@
+---
+import { Font } from 'astro:assets';
+import { getImage } from 'astro:assets';
+import '../styles/global.css';
+import { site } from '../data/site';
+import ogSource from '../assets/photos/hero-field.jpg';
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = await getImage({ src: ogSource, width: 1200, height: 630, format: 'jpg', fit: 'cover' });
+const ogUrl = new URL(ogImage.src, Astro.site);
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'RealEstateAgent',
+	name: site.name,
+	description: site.description,
+	url: Astro.site?.toString(),
+	telephone: '+1-612-968-3842',
+	email: site.email,
+	image: ogUrl.toString(),
+	areaServed: 'US',
+	founder: { '@type': 'Person', name: 'David Elmberg', jobTitle: 'CEO' },
+};
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+		<title>{site.title}</title>
+		<meta name="description" content={site.description} />
+		<link rel="canonical" href={canonical} />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<meta name="theme-color" content="#071A39" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content={site.name} />
+		<meta property="og:title" content={site.title} />
+		<meta property="og:description" content={site.description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={ogUrl} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta name="twitter:card" content="summary_large_image" />
+
+		<Font cssVariable="--font-display" preload={[{ weight: '400 700', style: 'normal' }]} />
+		<Font cssVariable="--font-body" preload={[{ weight: '400', style: 'normal' }]} />
+
+		<script is:inline>
+			document.documentElement.classList.add('js');
+		</script>
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+	</head>
+	<body>
+		<a class="skip-link" href="#main">Skip to content</a>
+		<slot />
+	</body>
+</html>

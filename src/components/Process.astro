@@ -1,0 +1,217 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import signingImg from '../assets/photos/signing.jpg';
+
+const steps = [
+	{
+		icon: 'file',
+		title: 'Tell us about your land',
+		text: 'Share a few details — the address and how to reach you. It takes about two minutes and there’s no obligation.',
+	},
+	{
+		icon: 'dollar',
+		title: 'Get a fair cash offer',
+		text: 'We evaluate your property and send a competitive cash offer within days, not weeks. No pressure, ever.',
+	},
+	{
+		icon: 'key',
+		title: 'Close & get paid',
+		text: 'We cover the closing costs and you walk away with cash — typically within 30 days.',
+	},
+] as const;
+---
+
+<section class="section process on-dark" id="process">
+	<div class="process-glow" aria-hidden="true"></div>
+	<div class="container">
+		<div class="section-head center">
+			<p class="eyebrow" data-reveal>How It Works</p>
+			<h2 class="section-title" data-reveal>Three simple steps to <em>cash in hand</em></h2>
+			<p class="lead" data-reveal>Maximize your land’s value and sell with ease. We handle the paperwork so you don’t have to.</p>
+		</div>
+
+		<div class="process-grid">
+			<ol class="steps">
+				{steps.map((s, i) => (
+					<li class="step" data-reveal style={`--delay:${i * 120}ms`}>
+						<div class="step-marker">
+							<span class="step-num">0{i + 1}</span>
+						</div>
+						<div class="step-card">
+							<span class="step-icon">
+								<Icon name={s.icon} size={22} />
+							</span>
+							<h3>{s.title}</h3>
+							<p>{s.text}</p>
+						</div>
+					</li>
+				))}
+			</ol>
+
+			<div class="process-media" data-reveal>
+				<Image
+					src={signingImg}
+					alt="Landowners reviewing and signing closing documents at a desk"
+					widths={[480, 720, 960]}
+					sizes="(min-width: 1024px) 460px, 92vw"
+				/>
+				<div class="process-media-cta">
+					<p>Ready when you are.</p>
+					<a href="#contact" class="btn btn-gold">Start Step 1 <Icon name="arrow" size={18} /></a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	.process {
+		position: relative;
+		isolation: isolate;
+		overflow: hidden;
+		background: var(--navy-900);
+		color: var(--white);
+	}
+	.process-glow {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background:
+			radial-gradient(60% 50% at 0% 0%, rgb(121 82 23 / 0.35), transparent 70%),
+			radial-gradient(50% 50% at 100% 100%, rgb(20 50 104 / 0.9), transparent 70%);
+	}
+	.process-glow::after {
+		/* subtle topographic-style lines, fitting for land */
+		content: '';
+		position: absolute;
+		inset: 0;
+		opacity: 0.07;
+		background-image: repeating-radial-gradient(circle at 80% 20%, transparent 0 22px, var(--gold-400) 22px 23px);
+		mask-image: linear-gradient(to bottom, black, transparent 70%);
+	}
+
+	.process-grid {
+		display: grid;
+		gap: 3rem;
+		align-items: center;
+	}
+	.steps {
+		display: grid;
+		gap: 1.25rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.step {
+		position: relative;
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 1.1rem;
+	}
+	.step:not(:last-child)::before {
+		/* connector line between markers */
+		content: '';
+		position: absolute;
+		left: 27px;
+		top: 60px;
+		bottom: -1.25rem;
+		width: 2px;
+		background: linear-gradient(to bottom, var(--gold-500), rgb(201 151 63 / 0.15));
+	}
+	.step-marker {
+		display: grid;
+		place-items: center;
+		width: 56px;
+		height: 56px;
+		border-radius: 50%;
+		background: linear-gradient(135deg, var(--gold-200), var(--gold-500));
+		color: var(--navy-900);
+		box-shadow: 0 0 0 6px rgb(201 151 63 / 0.15);
+	}
+	.step-num {
+		font-family: var(--font-display-stack);
+		font-size: 1.2rem;
+		font-weight: 700;
+	}
+	.step-card {
+		position: relative;
+		padding: 1.4rem 1.5rem;
+		border-radius: var(--radius);
+		background: rgb(255 255 255 / 0.05);
+		border: 1px solid rgb(255 255 255 / 0.1);
+		transition:
+			background-color 0.3s ease,
+			border-color 0.3s ease;
+	}
+	.step-card:hover {
+		background: rgb(255 255 255 / 0.08);
+		border-color: rgb(201 151 63 / 0.4);
+	}
+	.step-icon {
+		position: absolute;
+		top: 1.3rem;
+		right: 1.3rem;
+		color: var(--gold-400);
+		opacity: 0.8;
+	}
+	.step-card h3 {
+		font-size: 1.35rem;
+		padding-right: 2rem;
+	}
+	.step-card p {
+		margin-top: 0.4rem;
+		font-size: 0.95rem;
+		line-height: 1.6;
+		color: rgb(255 255 255 / 0.72);
+	}
+
+	.process-media {
+		position: relative;
+		border-radius: var(--radius-lg);
+		overflow: hidden;
+		box-shadow: var(--shadow-lg);
+		aspect-ratio: 1;
+	}
+	@media (min-width: 640px) {
+		.process-media {
+			aspect-ratio: 4 / 3;
+		}
+	}
+	.process-media :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.process-media-cta {
+		position: absolute;
+		left: 1rem;
+		right: 1rem;
+		bottom: 1rem;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem 1rem;
+		padding: 1rem 1rem 1rem 1.4rem;
+		border-radius: var(--radius);
+		background: rgb(7 26 57 / 0.78);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		border: 1px solid rgb(255 255 255 / 0.12);
+	}
+	.process-media-cta p {
+		font-family: var(--font-display-stack);
+		font-size: 1.25rem;
+	}
+
+	@media (min-width: 1024px) {
+		.process-grid {
+			grid-template-columns: 1.1fr 0.9fr;
+			gap: 4rem;
+		}
+		.process-media {
+			aspect-ratio: 4 / 5;
+		}
+	}
+</style>

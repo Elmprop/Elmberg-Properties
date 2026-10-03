@@ -1,0 +1,147 @@
+---
+import { Image } from 'astro:assets';
+import residential from '../assets/photos/land-residential.jpg';
+import acreage from '../assets/photos/land-acreage.jpg';
+import wooded from '../assets/photos/land-wooded.jpg';
+import vacant from '../assets/photos/land-vacant.jpg';
+
+const types = [
+	{ img: residential, title: 'Residential & Commercial', text: 'Homes, in-fill lots, and commercial properties.', alt: 'Aerial view of a neighborhood of homes and buildings along tree-lined streets' },
+	{ img: acreage, title: 'Rural Acreage & Farmland', text: 'Parcels of any size, including active or retired farm ground.', alt: 'Golden wheat field stretching to a distant tree line' },
+	{ img: wooded, title: 'Wooded & Recreational', text: 'Timber, hunting land, and lakeside lots.', alt: 'Forested hillside reflected in a calm lake' },
+	{ img: vacant, title: 'Vacant & Undeveloped', text: 'Empty lots, inherited land, and unused parcels.', alt: 'Wide open green field under a soft sky' },
+];
+---
+
+<section class="section land" aria-labelledby="land-title">
+	<div class="container">
+		<div class="section-head land-head">
+			<div>
+				<p class="eyebrow" data-reveal>Land We Buy</p>
+				<h2 class="section-title" id="land-title" data-reveal>
+					Every kind of land, <em>in any condition</em>
+				</h2>
+			</div>
+			<p class="lead" data-reveal>
+				No repairs, clean-up, or listing needed. If you own it, we want to hear about it — we assess every property
+				accurately and fairly.
+			</p>
+		</div>
+
+		<ul class="land-grid">
+			{types.map((t, i) => (
+				<li class="land-card" data-reveal style={`--delay:${i * 90}ms`}>
+					<Image src={t.img} alt={t.alt} widths={[400, 600, 800]} sizes="(min-width: 1024px) 290px, (min-width: 640px) 46vw, 92vw" />
+					<div class="land-body">
+						<h3>{t.title}</h3>
+						<p>{t.text}</p>
+					</div>
+				</li>
+			))}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.land {
+		background: var(--cream-100);
+	}
+	.land-head {
+		align-items: end;
+	}
+	.land-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: clamp(0.75rem, 2.5vw, 1.25rem);
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.land-card {
+		position: relative;
+		isolation: isolate;
+		display: flex;
+		align-items: flex-end;
+		min-height: clamp(230px, 62vw, 340px);
+		border-radius: var(--radius);
+		overflow: hidden;
+		color: var(--white);
+		box-shadow: var(--shadow);
+	}
+	.land-card :global(img) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		z-index: -2;
+		transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+	.land-card::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background: linear-gradient(to top, rgb(4 15 36 / 0.97) 0%, rgb(4 15 36 / 0.8) 30%, rgb(7 26 57 / 0.4) 55%, rgb(7 26 57 / 0.05) 80%);
+	}
+	.land-card::after {
+		content: '';
+		position: absolute;
+		left: 1.5rem;
+		right: 1.5rem;
+		bottom: 0;
+		height: 4px;
+		border-radius: 4px 4px 0 0;
+		background: var(--gold-500);
+		transform: scaleX(0.25);
+		transform-origin: left;
+		transition: transform 0.5s ease;
+	}
+	.land-card:hover :global(img) {
+		transform: scale(1.06);
+	}
+	.land-card:hover::after {
+		transform: scaleX(1);
+	}
+	.land-body {
+		padding: clamp(1rem, 3vw, 1.5rem);
+		/* keeps letter edges sharp where the photo behind is bright or busy */
+		text-shadow: 0 1px 2px rgb(3 12 30 / 0.6);
+	}
+	.land-body h3 {
+		font-size: clamp(1.1rem, 3.6vw, 1.45rem);
+	}
+	.land-body p {
+		margin-top: 0.35rem;
+		font-size: clamp(0.8rem, 2.4vw, 0.92rem);
+		line-height: 1.55;
+		font-weight: 500;
+		color: rgb(255 255 255 / 0.92);
+	}
+
+	@media (min-width: 640px) {
+		.land-card {
+			border-radius: var(--radius-lg);
+		}
+	}
+	@media (min-width: 900px) {
+		.land-head {
+			grid-template-columns: 1.1fr 1fr;
+			gap: 3rem;
+		}
+	}
+	@media (min-width: 1024px) {
+		.land-grid {
+			grid-template-columns: repeat(4, 1fr);
+		}
+		.land-card {
+			min-height: 420px;
+		}
+		.land-grid {
+			align-items: start;
+		}
+		.land-card:nth-child(even) {
+			margin-top: 2.5rem;
+		}
+	}
+</style>

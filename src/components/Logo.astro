@@ -1,0 +1,66 @@
+---
+interface Props {
+	tone?: 'light' | 'dark';
+	class?: string;
+}
+const { tone = 'light', class: className } = Astro.props;
+---
+
+<span class:list={['logo', `logo--${tone}`, className]}>
+	<svg class="logo-roof" viewBox="0 0 48 24" aria-hidden="true">
+		<path d="M4 23 24 5l20 18h-7.5L24 12 11.5 23z" />
+		<path d="M32 3h5.5v12.5L32 10.6z" />
+	</svg>
+	<span class="logo-word">Elmberg</span>
+	<span class="logo-sub">Properties</span>
+</span>
+
+<style>
+	.logo {
+		--logo-ink: var(--navy-900);
+		--logo-accent: var(--bronze-700);
+		display: inline-grid;
+		justify-items: center;
+		/* every size below is in em, so setting font-size on .logo scales the whole mark */
+		font-size: 1rem;
+		line-height: 1;
+		color: var(--logo-ink);
+	}
+	.logo--light {
+		--logo-ink: var(--white);
+		--logo-accent: var(--gold-500);
+	}
+	.logo-roof {
+		width: 1.875em;
+		height: 0.9375em;
+		fill: var(--logo-accent);
+		margin-bottom: 0.125em;
+	}
+	.logo-word {
+		font-family: var(--font-display-stack);
+		font-weight: 500;
+		font-size: 1.6em;
+		font-variant: small-caps;
+		letter-spacing: 0.04em;
+	}
+	.logo-sub {
+		display: flex;
+		align-items: center;
+		gap: 0.77em;
+		margin-top: 0.36em;
+		font-family: var(--font-body-stack);
+		font-size: 0.52em;
+		font-weight: 500;
+		letter-spacing: 0.32em;
+		text-transform: uppercase;
+		padding-left: 0.32em;
+	}
+	.logo-sub::before,
+	.logo-sub::after {
+		content: '';
+		width: 1.7em;
+		height: 1px;
+		background: currentColor;
+		opacity: 0.8;
+	}
+</style>
